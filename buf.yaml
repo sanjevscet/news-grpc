@@ -1,0 +1,19 @@
+# For details on buf.yaml configuration, visit https://buf.build/docs/configuration/v2/buf-yaml
+version: v2
+
+modules:
+  - path: proto
+
+lint:
+  use:
+    - DEFAULT
+    - SERVICE_SUFFIX
+
+breaking:
+  use:
+    - FILE
+    - WIRE_JSON
+    - PACKAGE
+
+deps:
+  - buf.build/protocolbuffers/wellknowntypes
