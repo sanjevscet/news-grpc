@@ -6,7 +6,7 @@ package news.v1;
 
 import "google/protobuf/timestamp.proto";
 
-message NewsRequest {
+message CreateRequest {
     string id = 1;
     string author = 2;
     string title = 3;
@@ -16,7 +16,19 @@ message NewsRequest {
     repeated string tags = 7;
 }
 
-message NewsResponse {
+message CreateResponse {
+    string id = 1;
+    string author = 2;
+    string title = 3;
+    string summary = 4;
+    string content = 5;
+    string source = 6;
+    repeated string tags = 7;
+
+    google.protobuf.Timestamp created_at = 8;
+}
+
+message GetResponse {
     string id = 1;
     string author = 2;
     string title = 3;
@@ -30,6 +42,6 @@ message NewsResponse {
     google.protobuf.Timestamp deleted_at = 10;
 }
  
-message NewsId {
+message GetRequest {
     string id = 1;
 }

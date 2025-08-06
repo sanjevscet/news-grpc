@@ -6,7 +6,7 @@ modules:
 
 lint:
   use:
-    - DEFAULT
+    - STANDARD
     - SERVICE_SUFFIX
 
 breaking:
