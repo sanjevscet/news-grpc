@@ -27,8 +27,8 @@ func main() {
 	))
 
 	healthSrv := health.NewServer()
-
 	healthV1.RegisterHealthServer(srv, healthSrv)
+	log.Println("Server started on port :50051 👍")
 
 	if err := srv.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

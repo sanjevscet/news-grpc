@@ -90,7 +90,7 @@ func parseAndValidate(in *newsv1.CreateRequest) (n *memstore.News, errs error) {
 		errs = errors.Join(errs, errors.New("invalid URL format"))
 	}
 
-	if err != nil {
+	if errs != nil {
 		return nil, errs
 	}
 
