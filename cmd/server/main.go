@@ -11,6 +11,7 @@ import (
 	newsv1 "github.com/sanjevscet/news-grpc/api/news/v1"
 
 	inGrpc "github.com/sanjevscet/news-grpc/internal/grpc"
+	"github.com/sanjevscet/news-grpc/internal/memstore"
 )
 
 func main() {
@@ -20,7 +21,10 @@ func main() {
 	}
 
 	srv := grpc.NewServer()
-	newsv1.RegisterNewsServiceServer(srv, inGrpc.NewServer())
+	stores := memstore.NewStore()
+	newsv1.RegisterNewsServiceServer(srv, inGrpc.NewServer(
+		stores,
+	))
 
 	healthSrv := health.NewServer()
 
