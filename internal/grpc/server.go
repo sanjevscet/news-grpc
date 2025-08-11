@@ -10,6 +10,7 @@ import (
 	"github.com/sanjevscet/news-grpc/internal/memstore"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -18,6 +19,7 @@ import (
 type NewsStorer interface {
 	Create(news *memstore.News) *memstore.News
 	Get(id uuid.UUID) *memstore.News
+	GetAll() []*memstore.News
 }
 type Server struct {
 	newsv1.UnimplementedNewsServiceServer
@@ -53,6 +55,7 @@ func (s *Server) Get(_ context.Context, request *newsv1.GetRequest) (*newsv1.Get
 		Id:        fetchedNews.ID.String(),
 		Author:    fetchedNews.Author,
 		Title:     fetchedNews.Title,
+		Summary:   fetchedNews.Summary,
 		Content:   fetchedNews.Content,
 		Source:    fetchedNews.Source.String(),
 		Tags:      fetchedNews.Tags,
@@ -60,6 +63,26 @@ func (s *Server) Get(_ context.Context, request *newsv1.GetRequest) (*newsv1.Get
 		UpdatedAt: timestamppb.New(fetchedNews.UpdatedAt.UTC()),
 		DeletedAt: timestamppb.New(fetchedNews.DeletedAt.UTC()),
 	}, nil
+}
+
+func (s *Server) GetAll(_ *emptypb.Empty, stream newsv1.NewsService_GetAllServer) error {
+	for _, news := range s.storer.GetAll() {
+		if err := stream.Send(&newsv1.GetResponse{
+			Id:        news.ID.String(),
+			Author:    news.Author,
+			Title:     news.Title,
+			Summary:   news.Summary,
+			Content:   news.Content,
+			Source:    news.Source.String(),
+			Tags:      news.Tags,
+			CreatedAt: timestamppb.New(news.CreatedAt.UTC()),
+			UpdatedAt: timestamppb.New(news.UpdatedAt.UTC()),
+			DeletedAt: timestamppb.New(news.DeletedAt.UTC()),
+		}); err != nil {
+			return status.Errorf(codes.Internal, "failed to send news: %v", err)
+		}
+	}
+	return nil
 }
 
 func parseAndValidate(in *newsv1.CreateRequest) (n *memstore.News, errs error) {
@@ -98,6 +121,7 @@ func parseAndValidate(in *newsv1.CreateRequest) (n *memstore.News, errs error) {
 		ID:      parsedID,
 		Author:  in.Author,
 		Title:   in.Title,
+		Summary: in.Summary,
 		Content: in.Content,
 		Source:  parsedUrl,
 		Tags:    in.Tags,
@@ -114,6 +138,7 @@ func toNewsResponse(news *memstore.News) *newsv1.CreateResponse {
 		Author:    news.Author,
 		Title:     news.Title,
 		Content:   news.Content,
+		Summary:   news.Summary,
 		Source:    news.Source.String(),
 		Tags:      news.Tags,
 		CreatedAt: timestamppb.New(news.CreatedAt.UTC()),

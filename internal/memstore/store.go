@@ -65,3 +65,16 @@ func (s *Store) Get(id uuid.UUID) *News {
 	}
 	return nil
 }
+
+func (s *Store) GetAll() []*News {
+	s.lock.RLock()
+	defer s.lock.RUnlock()
+
+	result := make([]*News, 0)
+	for _, news := range s.news {
+		if news.DeletedAt.IsZero() {
+			result = append(result, news)
+		}
+	}
+	return result
+}

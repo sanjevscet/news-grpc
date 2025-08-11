@@ -9,6 +9,7 @@ package newsv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -24,25 +25,29 @@ var File_news_v1_service_proto protoreflect.FileDescriptor
 
 const file_news_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x15news/v1/service.proto\x12\anews.v1\x1a\x12news/v1/news.proto2z\n" +
+	"\x15news/v1/service.proto\x12\anews.v1\x1a\x12news/v1/news.proto\x1a\x1bgoogle/protobuf/empty.proto2\xb4\x01\n" +
 	"\vNewsService\x129\n" +
 	"\x06Create\x12\x16.news.v1.CreateRequest\x1a\x17.news.v1.CreateResponse\x120\n" +
-	"\x03Get\x12\x13.news.v1.GetRequest\x1a\x14.news.v1.GetResponseB\x8e\x01\n" +
+	"\x03Get\x12\x13.news.v1.GetRequest\x1a\x14.news.v1.GetResponse\x128\n" +
+	"\x06GetAll\x12\x16.google.protobuf.Empty\x1a\x14.news.v1.GetResponse0\x01B\x8e\x01\n" +
 	"\vcom.news.v1B\fServiceProtoP\x01Z4github.com/sanjevscet/news-grpc/proto/news/v1;newsv1\xa2\x02\x03NXX\xaa\x02\aNews.V1\xca\x02\aNews\\V1\xe2\x02\x13News\\V1\\GPBMetadata\xea\x02\bNews::V1b\x06proto3"
 
 var file_news_v1_service_proto_goTypes = []any{
 	(*CreateRequest)(nil),  // 0: news.v1.CreateRequest
 	(*GetRequest)(nil),     // 1: news.v1.GetRequest
-	(*CreateResponse)(nil), // 2: news.v1.CreateResponse
-	(*GetResponse)(nil),    // 3: news.v1.GetResponse
+	(*emptypb.Empty)(nil),  // 2: google.protobuf.Empty
+	(*CreateResponse)(nil), // 3: news.v1.CreateResponse
+	(*GetResponse)(nil),    // 4: news.v1.GetResponse
 }
 var file_news_v1_service_proto_depIdxs = []int32{
 	0, // 0: news.v1.NewsService.Create:input_type -> news.v1.CreateRequest
 	1, // 1: news.v1.NewsService.Get:input_type -> news.v1.GetRequest
-	2, // 2: news.v1.NewsService.Create:output_type -> news.v1.CreateResponse
-	3, // 3: news.v1.NewsService.Get:output_type -> news.v1.GetResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	2, // 2: news.v1.NewsService.GetAll:input_type -> google.protobuf.Empty
+	3, // 3: news.v1.NewsService.Create:output_type -> news.v1.CreateResponse
+	4, // 4: news.v1.NewsService.Get:output_type -> news.v1.GetResponse
+	4, // 5: news.v1.NewsService.GetAll:output_type -> news.v1.GetResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
